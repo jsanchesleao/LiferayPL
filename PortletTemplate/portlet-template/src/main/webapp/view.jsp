@@ -15,7 +15,7 @@
 %>
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
+<%@ taglib uri="/struts-tags" prefix="s"%>
 
 <portlet:defineObjects />
-
-This is the <b>portlet-template</b>.
+<s:property escape="false" value="data"/>
