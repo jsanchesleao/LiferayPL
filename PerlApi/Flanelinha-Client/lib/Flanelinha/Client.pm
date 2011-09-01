@@ -17,4 +17,11 @@ sub portlet {
    }
 }
 
+sub log {
+   my $self = shift;
+   my $msg  = shift;
+   my $namespace = $self->namespace;
+   return $self->ua->post_form($self->url . "/portlet/$namespace/log" => {msg => $msg})->res->code == 200
+}
+
 42
