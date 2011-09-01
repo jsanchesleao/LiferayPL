@@ -2,19 +2,18 @@ package Flanelinha::Client;
 use Moose;
 use Mojo::UserAgent;
 
-has ua  => (is => "rw", isa => "Mojo::UserAgent", default => sub{Mojo::UserAgent->new});
-has url => (is => "rw", isa => "Str", default => "http://localhost:3000");
+has ua        => (is => "rw", isa => "Mojo::UserAgent", default => sub{Mojo::UserAgent->new});
+has url       => (is => "rw", isa => "Str", default => "http://localhost:3000");
+has namespace => (is => "rw", isa => "Str", required => 1);
 
 sub portlet {
    my $self = shift;
-   if(@_ > 1) {
+   my $namespace = $self->namespace;
+   if(@_ > 0) {
       my %pars = @_;
-      return $self->ua->post_form($self->url . "/portlet/$pars{namespace}" => {%pars})->res->code == 200
-   } elsif(@_ == 1) {
-      my $namespace = shift;
-      return $self->ua->get($self->url . "/portlet/$namespace")->res->json->{obj}
+      return $self->ua->post_form($self->url . "/portlet/$namespace" => {namespace => $namespace, %pars})->res->code == 200
    } else {
-      die "'" . ref($self) . "->portlet' should receive at least 1 parameter";
+      return $self->ua->get($self->url . "/portlet/$namespace")->res->json->{obj}
    }
 }
 
